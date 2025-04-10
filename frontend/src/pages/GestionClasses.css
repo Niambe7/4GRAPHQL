@@ -1,0 +1,123 @@
+/* src/pages/GestionClasses.css */
+.gestion-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.gestion-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #182848;
+}
+
+/* Section pour créer une nouvelle classe */
+.create-class-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.create-class-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.create-class-form input {
+  padding: 10px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-action {
+  padding: 10px 20px;
+  background-color: #4b6cb7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-action:hover {
+  background-color: #182848;
+}
+
+/* Grid pour lister les classes */
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+/* Card pour chaque classe */
+.class-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.class-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+}
+
+.card-content h2 {
+  margin: 0;
+  margin-bottom: 10px;
+  color: #4b6cb7;
+}
+
+.card-content p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.card-actions {
+  margin-top: 10px;
+}
+
+/* Form pour ajouter un élève */
+.add-student-form {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+/* Sélecteur de l'étudiant - style similaire aux autres select */
+.select-field {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.select-field:focus {
+  border-color: #4b6cb7;
+  outline: none;
+}
+
+.btn-secondary {
+  background-color: #ffaf50;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #ff7f50;
+}

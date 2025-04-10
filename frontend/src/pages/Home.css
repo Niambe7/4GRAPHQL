@@ -1,0 +1,80 @@
+/* src/pages/Home.css */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .home-header {
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  .home-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .home-header p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .btn-login {
+    background-color: #ff7f50;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-login:hover {
+    background-color: #ff6347;
+  }
+  
+  .home-features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+    background-color: #f4f4f4;
+  }
+  
+  .feature-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 300px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .feature-card h2 {
+    margin-bottom: 10px;
+  }
+  
+  .feature-card p {
+    color: #555;
+  }
+  
+  .home-footer {
+    margin-top: auto;
+    padding: 20px;
+    text-align: center;
+    background-color: #eee;
+    font-size: 0.9rem;
+  }
+  

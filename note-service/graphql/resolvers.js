@@ -4,20 +4,33 @@ const Grade = require('../models/Grade');
 
 const resolvers = {
   Query: {
+    // Query pour récupérer les notes. Pour un utilisateur non professeur, seules ses notes sont retournées.
     grades: async (_, { courses }, { user }) => {
       if (!user) {
         throw new Error("Not authenticated");
       }
-      // Pour les étudiants, ne retourner que leurs propres notes
       const whereClause = {};
+      // Si l'utilisateur n'est pas professeur, on compare les identifiants sous forme de nombre
       if (user.role !== "professor") {
-        whereClause.studentId = user.id;
+        whereClause.studentId = Number(user.id);
       }
-      // Si on spécifie un ou plusieurs cours, filtrer par ceux-ci
       if (courses && courses.length > 0) {
         whereClause.course = { [Op.in]: courses };
       }
       const grades = await Grade.findAll({ where: whereClause });
+      return grades;
+    },
+    
+    // Query pour récupérer les notes pour un étudiant donné
+    gradesByStudent: async (_, { studentId }, { user }) => {
+      if (!user) {
+        throw new Error("Not authenticated");
+      }
+      // Si l'utilisateur n'est pas professeur, il ne peut accéder qu'à ses propres notes (conversion via Number())
+      if (user.role !== "professor" && Number(user.id) !== Number(studentId)) {
+        throw new Error("Not authorized");
+      }
+      const grades = await Grade.findAll({ where: { studentId: Number(studentId) } });
       return grades;
     }
   },
@@ -26,7 +39,11 @@ const resolvers = {
       if (!user || user.role !== "professor") {
         throw new Error("Not authorized");
       }
-      const newGrade = await Grade.create({ course, grade, studentId });
+      const newGrade = await Grade.create({
+        course,
+        grade,
+        studentId: Number(studentId),
+      });
       return newGrade;
     },
     updateGrade: async (_, { id, course, grade }, { user }) => {

@@ -10,9 +10,11 @@ const typeDefs = gql`
   }
 
   type Query {
-    # Retourne les notes. Si l'argument "courses" est fourni,
-    # on filtre par les cours indiqués.
+    # Retourne les notes. Si l'argument "courses" est fourni, on filtre par les cours indiqués.
     grades(courses: [String]): [Grade]
+    
+    # Retourne les notes pour un étudiant donné
+    gradesByStudent(studentId: ID!): [Grade]
   }
 
   type Mutation {
