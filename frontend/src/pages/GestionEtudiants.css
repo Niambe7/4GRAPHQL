@@ -1,73 +1,97 @@
 /* src/pages/GestionEtudiants.css */
 .gestion-etudiants-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .gestion-etudiants-container h1 {
-    color: #182848;
-    margin-bottom: 10px;
-  }
-  
-  .etudiants-actions {
-    margin: 20px 0;
-  }
-  
-  .btn-action {
-    background: #4b6cb7;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn-action:hover {
-    background: #182848;
-  }
-  
-  .etudiants-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-  }
-  
-  .etudiants-table th, .etudiants-table td {
-    border: 1px solid #ccc;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .etudiants-table th {
-    background: #f5f5f5;
-  }
-  
-  .btn-secondary {
-    margin-right: 10px;
-    background: #ffaf50;
-    color: #fff;
-    padding: 6px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .btn-secondary:hover {
-    background: #ff7f50;
-  }
-  
-  .btn-danger {
-    background: #e74c3c;
-    color: #fff;
-    padding: 6px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .btn-danger:hover {
-    background: #c0392b;
-  }
-  
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.gestion-etudiants-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #182848;
+}
+
+.etudiants-actions {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.create-user-form {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-user-form input,
+.create-user-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 5px;
+  min-width: 180px;
+}
+
+.btn-action {
+  padding: 10px 20px;
+  background-color: #4b6cb7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-action:hover {
+  background-color: #182848;
+}
+
+.etudiants-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.etudiants-table th,
+.etudiants-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.etudiants-table th {
+  background-color: #f5f5f5;
+}
+
+.btn-secondary {
+  margin-right: 10px;
+  background-color: #ffaf50;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #ff7f50;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+/* Vous pouvez ajouter des marges supplémentaires pour séparer les boutons d'action si nécessaire */

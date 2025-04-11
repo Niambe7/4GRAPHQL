@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   const renderProfessorDashboard = () => (
     <div className="dashboard-container">
-      <h1>Bienvenue, Professeur @{user.pseudo}</h1>
+      <h1>Bienvenue, Professeur {user.pseudo}</h1>
       
       <div className="dashboard-cards">
         {/* Chaque carte devient cliquable via onClick -> navigate() */}
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
   const renderStudentDashboard = () => (
     <div className="dashboard-container">
-      <h1>Bienvenue, @{user.pseudo}</h1>
+      <h1>Bienvenue, {user.pseudo}</h1>
       
       <div className="dashboard-cards">
         <div className="card">

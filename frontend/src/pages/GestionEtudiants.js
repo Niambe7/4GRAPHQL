@@ -68,12 +68,15 @@ const GestionEtudiantsContent = () => {
 
   // Fonction pour supprimer un étudiant
   const handleDeleteUser = async (userId) => {
-    try {
-      await deleteUser({ variables: { id: userId } });
-      refetch();
-    } catch (err) {
-      console.error('Erreur suppression utilisateur:', err);
+    if (window.confirm("Voulez-vous vraiment supprimer cet étudiant ?")){
+      try {
+        await deleteUser({ variables: { id: userId } });
+        refetch();
+      } catch (err) {
+        console.error('Erreur suppression utilisateur:', err);
+      }
     }
+    
   };
 
   if (loading) return <p>Chargement des étudiants...</p>;

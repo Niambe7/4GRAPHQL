@@ -1,4 +1,4 @@
-// GestionNotes.js
+// src/pages/GestionNotes.js
 import React, { useState } from 'react';
 import { ApolloProvider, useQuery, useMutation } from '@apollo/client';
 import clientNote from '../apollo/clientNote';
@@ -6,7 +6,8 @@ import clientClass from '../apollo/clientClasses';
 import clientCourse from '../apollo/clientCourse';
 import clientUser from '../apollo/clientUser';
 import { GET_GRADES, CREATE_GRADE, UPDATE_GRADE, DELETE_GRADE } from '../graphql/noteQueries';
-import { GET_CLASSES } from '../graphql/queries';       // Pour récupérer les classes
+// Import des queries pour récupérer les classes et la table pivot classStudents
+import { GET_CLASSES, GET_CLASS_STUDENTS } from '../graphql/queries';
 import { GET_COURSES } from '../graphql/courseQueries';       // Pour récupérer les cours
 import { GET_USERS } from '../graphql/userQueries';           // Pour récupérer les utilisateurs
 import './GestionNotes.css';
@@ -18,8 +19,11 @@ const GestionNotesContent = () => {
   // 2. Récupérer les classes depuis le service classe
   const { loading: classesLoading, error: classesError, data: classesData } = useQuery(GET_CLASSES, { client: clientClass });
   
+  // 2bis. Récupérer la table pivot pour l'association classe/étudiant
+  const { loading: classStudentsLoading, error: classStudentsError, data: classStudentsData } = useQuery(GET_CLASS_STUDENTS, { client: clientClass });
+  
   // 3. État pour le formulaire de création d'une note
-  // On stocke ici: classId, courseId, studentId, note
+  // On stocke ici : classId, courseId, studentId, grade
   const [newGrade, setNewGrade] = useState({
     classId: '',
     courseId: '',
@@ -44,7 +48,7 @@ const GestionNotesContent = () => {
     skip: !newGrade.classId,
   });
   
-  // 7. Pour le filtre, récupérer les cours de la classe filtrée
+  // 7. Pour le filtre, récupérer les cours de la classe filtrée dans le tableau
   const { data: filterCoursesData, loading: filterCoursesLoading, error: filterCoursesError } = useQuery(GET_COURSES, {
     client: clientCourse,
     variables: { classId: filterClassId ? parseInt(filterClassId, 10) : null },
@@ -53,7 +57,23 @@ const GestionNotesContent = () => {
   
   // 8. Récupérer les utilisateurs depuis le service user (pour avoir la liste des étudiants)
   const { loading: usersLoading, error: usersError, data: usersData } = useQuery(GET_USERS, { client: clientUser });
+  
+  console.log('Users data:', usersData);
+
+  // On filtre pour ne garder que les étudiants
   const studentList = usersData ? usersData.users.filter(u => u.role === 'student') : [];
+  
+  // Pour la sélection des étudiants lors de l'attribution,
+  // on utilise la table pivot pour filtrer par classe.
+  const studentIdsInClass = newGrade.classId && classStudentsData
+    ? classStudentsData.classStudents
+        .filter(cs => Number(cs.classId) === Number(newGrade.classId))
+        .map(cs => Number(cs.studentId))
+    : [];
+    
+  const filteredStudents = studentList.filter(student => 
+    studentIdsInClass.includes(Number(student.id))
+  );
   
   // 9. Mutations pour les notes (service note)
   const [createGrade] = useMutation(CREATE_GRADE, { client: clientNote });
@@ -104,38 +124,54 @@ const GestionNotesContent = () => {
     }
   };
   
-  // Fonction pour supprimer une note
+  // Fonction pour supprimer une note avec confirmation
   const handleDeleteGrade = async (id) => {
-    try {
-      await deleteGrade({ variables: { id } });
-      refetchGrades();
-    } catch (err) {
-      console.error('Erreur suppression note:', err);
+    if (window.confirm("Voulez-vous vraiment supprimer cette note ?")) {
+      try {
+        await deleteGrade({ variables: { id } });
+        refetchGrades();
+      } catch (err) {
+        console.error('Erreur suppression note:', err);
+      }
     }
   };
   
   // Filtrage du tableau des notes en fonction de la classe sélectionnée dans le filtre
   let filteredGrades = gradesData?.grades || [];
   if (filterClassId && filterCoursesData && filterCoursesData.courses) {
-    // Créez un ensemble des noms de cours associés à la classe filtrée
+    // Création d'un ensemble des noms de cours associés à la classe filtrée
     const courseNamesSet = new Set(filterCoursesData.courses.map(course => course.name));
     filteredGrades = filteredGrades.filter(grade => courseNamesSet.has(grade.course));
   }
   
-  if (gradesLoading || classesLoading || coursesLoading || usersLoading || filterCoursesLoading)
+  if (gradesLoading || classesLoading || coursesLoading || usersLoading || filterCoursesLoading || classStudentsLoading)
     return <p>Chargement des données...</p>;
   if (gradesError) return <p>Erreur : {gradesError.message}</p>;
   if (classesError) return <p>Erreur : {classesError.message}</p>;
   if (coursesError) return <p>Erreur : {coursesError.message}</p>;
   if (usersError) return <p>Erreur : {usersError.message}</p>;
   if (filterCoursesError) return <p>Erreur : {filterCoursesError.message}</p>;
+  if (classStudentsError) return <p>Erreur : {classStudentsError.message}</p>;
   
   return (
     <div className="gestion-notes-container">
       <h1>Gestion des Notes</h1>
       
-      {/* Filtre pour le tableau : Filtrer par classe */}
-      
+      {/* Filtre pour le tableau : Filtrer par Classe */}
+      <div className="filter-section">
+        <label htmlFor="filterClass">Filtrer par Classe:</label>
+        <select
+          id="filterClass"
+          value={filterClassId}
+          onChange={(e) => setFilterClassId(e.target.value)}
+          className="select-field"
+        >
+          <option value="">-- Toutes les classes --</option>
+          {classesData.classes.map(cls => (
+            <option key={cls.id} value={cls.id}>{cls.name}</option>
+          ))}
+        </select>
+      </div>
       
       {/* Formulaire pour attribuer une nouvelle note */}
       <div className="notes-actions">
@@ -145,7 +181,7 @@ const GestionNotesContent = () => {
           <select
             value={newGrade.classId}
             onChange={(e) => {
-              setNewGrade({ ...newGrade, classId: e.target.value, courseId: '' });
+              setNewGrade({ ...newGrade, classId: e.target.value, courseId: '', studentId: '' });
             }}
             required
             className="select-field"
@@ -170,20 +206,23 @@ const GestionNotesContent = () => {
             ))}
           </select>
           
-          {/* Sélection de l'étudiant */}
+          {/* Sélection de l'étudiant via son pseudo (filtré par la classe sélectionnée via la table pivot) */}
           <select
             value={newGrade.studentId}
             onChange={(e) => setNewGrade({ ...newGrade, studentId: e.target.value })}
+            disabled={!newGrade.classId}
             required
             className="select-field"
           >
             <option value="">-- Choisir un étudiant --</option>
-            {studentList.map(student => (
-              <option key={student.id} value={student.id}>{student.pseudo}</option>
+            {filteredStudents.map(student => (
+              <option key={student.id} value={student.id}>
+                {student.pseudo}
+              </option>
             ))}
           </select>
           
-          {/* Champ de saisie de la note (placé en dernier) */}
+          {/* Champ de saisie de la note */}
           <input
             type="number"
             step="0.1"
@@ -191,25 +230,11 @@ const GestionNotesContent = () => {
             value={newGrade.grade}
             onChange={(e) => setNewGrade({ ...newGrade, grade: e.target.value })}
             required
+            className="input-field"
           />
           
           <button type="submit" className="btn-action">Attribuer la Note</button>
         </form>
-      </div>
-
-      <div className="filter-section">
-        <label htmlFor="filterClass">Filtrer par Classe:</label>
-        <select
-          id="filterClass"
-          value={filterClassId}
-          onChange={(e) => setFilterClassId(e.target.value)}
-          className="select-field"
-        >
-          <option value="">-- Toutes les classes --</option>
-          {classesData.classes.map(cls => (
-            <option key={cls.id} value={cls.id}>{cls.name}</option>
-          ))}
-        </select>
       </div>
       
       {/* Tableau listant les notes filtrées */}
@@ -235,6 +260,7 @@ const GestionNotesContent = () => {
                     onChange={(e) =>
                       setEditedGrade({ ...editedGrade, course: e.target.value })
                     }
+                    className="input-field"
                   />
                 ) : (
                   grade.course
@@ -249,6 +275,7 @@ const GestionNotesContent = () => {
                     onChange={(e) =>
                       setEditedGrade({ ...editedGrade, grade: e.target.value })
                     }
+                    className="input-field"
                   />
                 ) : (
                   grade.grade

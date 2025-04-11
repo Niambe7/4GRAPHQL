@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import GestionClasses from './pages/GestionClasses';
 import GestionNotes from './pages/GestionNotes';
+import GestionCours from './pages/GestionCours';
 import GestionEtudiants from './pages/GestionEtudiants'; 
 import MesCours from './pages/MesCours';
 import MesNotes from './pages/MesNotes';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/classes" element={<GestionClasses />} />
         <Route path="/notes" element={<GestionNotes />} />
         <Route path="/students" element={<GestionEtudiants />} />
+        <Route path="/courses" element={<GestionCours />} />
         <Route path="/mes-notes" element={<MesNotes />} />
         <Route path="/mes-cours" element={<MesCours />} />
         <Route path="*" element={<NotFound />} />

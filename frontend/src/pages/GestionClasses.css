@@ -1,123 +1,139 @@
 /* src/pages/GestionClasses.css */
+
+/* Conteneur principal */
 .gestion-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f8f8;
 }
 
+/* Titre principal */
 .gestion-container h1 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #182848;
+  margin-bottom: 40px;
+  color: #333;
 }
 
-/* Section pour créer une nouvelle classe */
+/* Section de création d'une classe */
 .create-class-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .create-class-form {
   display: flex;
-  gap: 10px;
+  justify-content: center;
   align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.create-class-form input {
+.create-class-form input[type="text"] {
   padding: 10px;
-  width: 250px;
+  width: 300px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1em;
 }
 
 .btn-action {
-  padding: 10px 20px;
-  background-color: #4b6cb7;
+  background-color: #4caf50;
   color: #fff;
   border: none;
+  padding: 10px 20px;
+  font-size: 1em;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-action:hover {
-  background-color: #182848;
+  background-color: #43a047;
 }
 
-/* Grid pour lister les classes */
+/* Grille des classes */
 .classes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* Style de chaque carte de classe */
+.class-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
-/* Card pour chaque classe */
-.class-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  padding: 20px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.class-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 12px rgba(0,0,0,0.2);
-}
-
 .card-content h2 {
-  margin: 0;
   margin-bottom: 10px;
-  color: #4b6cb7;
+  font-size: 1.4em;
+  color: #333;
 }
 
 .card-content p {
-  margin: 5px 0;
-  color: #555;
+  margin: 0;
+  color: #666;
+  line-height: 1.4;
 }
 
+/* Actions sur la carte */
 .card-actions {
-  margin-top: 10px;
-}
-
-/* Form pour ajouter un élève */
-.add-student-form {
   display: flex;
-  gap: 5px;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* Sélecteur de l'étudiant - style similaire aux autres select */
+.card-actions button {
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.95em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Bouton pour supprimer */
+.btn-danger {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #e53935;
+}
+
+/* Bouton pour modifier ou ajouter */
+.btn-secondary {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #1e88e5;
+}
+
+/* Style des formulaires dans les cartes */
+.add-student-form,
+.remove-student-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .select-field {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-  color: #333;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.select-field:focus {
-  border-color: #4b6cb7;
-  outline: none;
-}
-
-.btn-secondary {
-  background-color: #ffaf50;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background-color: #ff7f50;
+  min-width: 200px;
+  font-size: 0.95em;
 }

@@ -28,6 +28,7 @@ const Header = () => {
                   <li><Link to="/classes">Gestion des Classes</Link></li>
                   <li><Link to="/notes">Gestion des Notes</Link></li>
                   <li><Link to="/students">Gestion des Étudiants</Link></li>
+                  <li><Link to="/courses">Gestion des Cours</Link></li>
                 </>
               ) : (
                 <>

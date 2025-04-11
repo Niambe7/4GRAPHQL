@@ -5,8 +5,13 @@ const typeDefs = gql`
   type Class {
     id: ID!
     name: String!
-    # Pour simplifier, on retourne la liste des IDs des étudiants inscrits
+    # Retourne la liste des IDs des étudiants inscrits à la classe
     students: [Int]
+  }
+
+  type ClassStudent {
+    classId: ID!
+    studentId: ID!
   }
 
   type GradeStats {
@@ -19,6 +24,8 @@ const typeDefs = gql`
     classes(sortByName: Boolean): [Class]
     class(id: ID!): Class
     classGrades(classId: ID!): GradeStats
+    # Nouvelle query pour récupérer toutes les associations classe/étudiant
+    classStudents: [ClassStudent]
   }
 
   type Mutation {
@@ -26,6 +33,7 @@ const typeDefs = gql`
     updateClass(id: ID!, name: String): Class
     deleteClass(id: ID!): Boolean
     addStudentToClass(classId: ID!, studentId: ID!): Class
+    removeStudentFromClass(classId: ID!, studentId: ID!): Class
   }
 `;
 

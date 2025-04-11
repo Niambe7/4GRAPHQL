@@ -21,12 +21,38 @@ export const CREATE_CLASS = gql`
   }
 `;
 
+export const DELETE_CLASS = gql`
+  mutation DeleteClass($id: ID!) {
+    deleteClass(id: $id)
+  }
+`;
+
 export const ADD_STUDENT_TO_CLASS = gql`
   mutation AddStudentToClass($classId: ID!, $studentId: ID!) {
     addStudentToClass(classId: $classId, studentId: $studentId) {
       id
       name
       students
+    }
+  }
+`;
+
+export const REMOVE_STUDENT_FROM_CLASS = gql`
+  mutation RemoveStudentFromClass($classId: ID!, $studentId: ID!) {
+    removeStudentFromClass(classId: $classId, studentId: $studentId) {
+      id
+      name
+      students
+    }
+  }
+`;
+
+
+export const GET_CLASS_STUDENTS = gql`
+  query GetClassStudents {
+    classStudents {
+      classId
+      studentId
     }
   }
 `;
